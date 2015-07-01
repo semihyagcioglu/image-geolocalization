@@ -30,7 +30,6 @@ function [latitude, longitude, FirstCandidates, SecondCandidates, ThirdCandidate
 		AllCandidates(k).MatchScore = 0;
     end
 	
-	% Clear gist tinyImage AllCandidateItems;
     disp('Normalizing GIST and Tiny Image scores...');    
 	GistScores = struct('Min', min([AllCandidates.GistScore]), 'Max', max([AllCandidates.GistScore]), 'Mean', mean([AllCandidates.GistScore])); % Compute gist and tiny image min/max/mean scores.
 	TinyImageScores = struct('Min', min([AllCandidates.TinyImageScore]), 'Max', max([AllCandidates.TinyImageScore]), 'Mean', mean([AllCandidates.TinyImageScore]));

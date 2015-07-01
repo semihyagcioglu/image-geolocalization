@@ -24,7 +24,7 @@ function [averageEstimationError] = DemoApp(mode, parameters)
     JointResults = struct('QueryImageName', [], 'EstimationError', 0, 'ComputationTime', 0, 'Success', 0, 'ByChanceDistanceError', 0, 'TimesBetterThanChance', 0);
 	baseFolder = [datestr(now,30) '-' Settings.ExperimentName] ;    
     mkdir(Settings.ResultPath, baseFolder); % Create a base directory to save the results for the input.
-    disp('Starting Geolocalization...');
+    disp('Starting geolocalization task...');
 	AllItems = LoadPreRequisites(Settings);
 	
     if(Settings.SizeCap ~= 0 && length(AllItems) > Settings.SizeCap)
@@ -156,5 +156,5 @@ function [averageEstimationError] = DemoApp(mode, parameters)
 	save([Settings.ResultPath 'JointResults.mat'], 'JointResults');
 	struct2csv(JointResults, [Settings.ResultPath 'joint-recall-results-' Settings.ExperimentName '.csv']); % Save as csv file	
 	averageEstimationError = mean([JointResults.EstimationError]);   
-    disp('Geolocalization completed successfuly!');
+    disp('Geolocalization task completed successfuly!');
 end
