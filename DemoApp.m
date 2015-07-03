@@ -3,7 +3,7 @@ function [averageEstimationError] = DemoApp(mode, parameters)
 	% Geolocalize given query scene(s) using a reference dataset.
 	%
 	% Inputs:	mode - only test mode for now
-	% 			parameters - simply a struct with the same fields as settings. You can set any field as you wish.
+	% 		parameters - simply a struct with the same fields as settings. You can set any field as you wish.
 	%
 	% Outputs:	averageEstimationError - average estimation error for given scene(s)
 		
@@ -21,19 +21,19 @@ function [averageEstimationError] = DemoApp(mode, parameters)
 	
 	Settings.InitialResultPath = Settings.ResultPath; % Used to reset to initial folder    
 	Results = struct('QueryImageName', [], 'QueryImageLatitude', 0, 'QueryImageLongitude', 0, 'EstimatedLatitude', 0, 'EstimatedLongitude', 0, 'EstimationError', 0, 'ComputationTime', 0, 'Success', 0, 'TimesBetterThanChance', 0);
-    JointResults = struct('QueryImageName', [], 'EstimationError', 0, 'ComputationTime', 0, 'Success', 0, 'ByChanceDistanceError', 0, 'TimesBetterThanChance', 0);
+	JointResults = struct('QueryImageName', [], 'EstimationError', 0, 'ComputationTime', 0, 'Success', 0, 'ByChanceDistanceError', 0, 'TimesBetterThanChance', 0);
 	baseFolder = [datestr(now,30) '-' Settings.ExperimentName] ;    
-    mkdir(Settings.ResultPath, baseFolder); % Create a base directory to save the results for the input.
-    disp('Starting geolocalization task...');
+	mkdir(Settings.ResultPath, baseFolder); % Create a base directory to save the results for the input.
+	disp('Starting geolocalization task...');
 	AllItems = LoadPreRequisites(Settings);
 	
-    if(Settings.SizeCap ~= 0 && length(AllItems) > Settings.SizeCap)
+	if(Settings.SizeCap ~= 0 && length(AllItems) > Settings.SizeCap)
 		r = randi(length(AllItems), Settings.SizeCap, 1); % Get random integers
 		AllItems = AllItems(r); % Reduce dataset size by selecting random items from dataset, for size effect in the paper.
 		clear r;	
-    end
-     
-    if(strcmp(mode,'test')) % Test mode
+	end
+
+	if(strcmp(mode,'test')) % Test mode
 		inputImageList = dir([Settings.QueryDataPath '*.jpg']); % Get query image list
 		if isempty(inputImageList)
 			error('Cannot find the query images.');
@@ -41,17 +41,17 @@ function [averageEstimationError] = DemoApp(mode, parameters)
 		[~,order] = sort_nat({inputImageList.name}); % Sort images in asc order.
 		inputImageList = inputImageList(order);
 		imageCount = length(inputImageList);
-    end
+	end
 
-    if(Settings.SequenceCap ~= 0 && imageCount > Settings.SequenceCap)
-        imageCount = Settings.SequenceCap;
-    end
-    
-    for imageIndex=1:imageCount
+	if(Settings.SequenceCap ~= 0 && imageCount > Settings.SequenceCap)
+		imageCount = Settings.SequenceCap;
+	end
+
+	for imageIndex=1:imageCount
 		start = clock;
-        Settings.ResultPath = [Settings.InitialResultPath baseFolder '/']; % Set path to base folder      
-        Results.QueryImageName = num2str(imageIndex);
-        
+		Settings.ResultPath = [Settings.InitialResultPath baseFolder '/']; % Set path to base folder      
+		Results.QueryImageName = num2str(imageIndex);
+
 		if(strcmp(mode, 'test')) % Test mode		
 			%if(~strcmp(inputImageList(imageIndex).name, '0445.jpg')) % To test specific image. Comment o/w.
 			% Settings.ResultPath = [Settings.InitialResultPath]; % Reset path       
@@ -80,21 +80,21 @@ function [averageEstimationError] = DemoApp(mode, parameters)
 			queryImage = keyFrames(imageIndex);
 		end
 		
-        mkdir(Settings.ResultPath, Results.QueryImageName); % Create a directory to save individual results.
-        Settings.ResultPath = [Settings.ResultPath Results.QueryImageName '/'];
-        [latitude, longitude, FirstCandidates, SecondCandidates, ThirdCandidates, FirstCandidateOutliers, SecondCandidateOutliers, AllCandidates] = RetrieveAlignPredict(queryImage, AllItems, Settings);
-        % Display Results
-        disp('---------RESULTS--------------------------------------------------------------------------------------');
-        disp(['Estimated location for image ' Results.QueryImageName]);
-        disp(['Latitude:' num2str(latitude)]);
-        disp(['Longitude:' num2str(longitude)]);
-        computationTime = etime(clock, start);
-        disp(['The computation took ' num2str(computationTime) ' seconds on the ' num2str(size(queryImage, 2)) 'x' num2str(size(queryImage, 1)) ' image']);
-		
+		mkdir(Settings.ResultPath, Results.QueryImageName); % Create a directory to save individual results.
+		Settings.ResultPath = [Settings.ResultPath Results.QueryImageName '/'];
+		[latitude, longitude, FirstCandidates, SecondCandidates, ThirdCandidates, FirstCandidateOutliers, SecondCandidateOutliers, AllCandidates] = RetrieveAlignPredict(queryImage, AllItems, Settings);
+		% Display Results
+		disp('---------RESULTS--------------------------------------------------------------------------------------');
+		disp(['Estimated location for image ' Results.QueryImageName]);
+		disp(['Latitude:' num2str(latitude)]);
+		disp(['Longitude:' num2str(longitude)]);
+		computationTime = etime(clock, start);
+		disp(['The computation took ' num2str(computationTime) ' seconds on the ' num2str(size(queryImage, 2)) 'x' num2str(size(queryImage, 1)) ' image']);
+
 		if(strcmp(mode,'test')) % Test mode
 			latlongQueryImage = [Settings.QueryImageLatitude Settings.QueryImageLongitude];
 			Results.EstimationError = lldistkm(latlongQueryImage, [latitude longitude]); % Calculate distance between estimated location and query location
-			
+
 			if(Results.EstimationError < Settings.SuccessDistance)
 				Results.Success = 1;
 				disp('Estimation succeeded...');
@@ -110,7 +110,7 @@ function [averageEstimationError] = DemoApp(mode, parameters)
 			Results.TimesBetterThanChance = estimatedDistanceForRandomSelection / Results.EstimationError;     
 			disp(['Our results are better than chance by ' num2str(Results.TimesBetterThanChance) ' times']);
 		end
-        disp('--------------------------------------------------------------------------------------------------------');
+		disp('--------------------------------------------------------------------------------------------------------');
 		
 		if(Settings.DisplayResults == 1 || Settings.ExportResults == 1)
 			disp('Adjusting points..');
@@ -118,17 +118,17 @@ function [averageEstimationError] = DemoApp(mode, parameters)
 		end
 		
 		% Plot results
-        if(Settings.DisplayResults == 1)
-            disp('Plotting results..');
+		if(Settings.DisplayResults == 1)
+			disp('Plotting results..');
 			DisplayAndSaveResults(queryImage, FirstCandidates, SecondCandidates, ThirdCandidates, RandomCandidates, AllCandidates, FirstCandidateOutliers, SecondCandidateOutliers, Settings); % Display and save results altogether
 			close all;
-        end
-
-        Results.QueryImageLatitude = Settings.QueryImageLatitude; % Save results
-        Results.QueryImageLongitude = Settings.QueryImageLongitude;
-        Results.EstimatedLatitude = latitude;
-        Results.EstimatedLongitude = longitude;
-        Results.ComputationTime = computationTime;
+		end
+	
+		Results.QueryImageLatitude = Settings.QueryImageLatitude; % Save results
+		Results.QueryImageLongitude = Settings.QueryImageLongitude;
+		Results.EstimatedLatitude = latitude;
+		Results.EstimatedLongitude = longitude;
+		Results.ComputationTime = computationTime;
 		
 		if(Settings.ExportResults == 1)			
 			save([Settings.ResultPath 'Settings.mat'], 'Settings');
@@ -142,19 +142,19 @@ function [averageEstimationError] = DemoApp(mode, parameters)
 			save([Settings.ResultPath 'AllCandidates.mat'], 'AllCandidates');
 			close all;
 		end
-        
-        % Set joint results        
-        JointResults(imageIndex).QueryImageName = Results.QueryImageName;  
-        JointResults(imageIndex).EstimationError = Results.EstimationError;
-        JointResults(imageIndex).ByChanceDistanceError = estimatedDistanceForRandomSelection;
-        JointResults(imageIndex).ComputationTime = Results.ComputationTime;
-        JointResults(imageIndex).TimesBetterThanChance = Results.TimesBetterThanChance;
-        JointResults(imageIndex).Success = Results.Success;
-    end
+
+		% Set joint results        
+		JointResults(imageIndex).QueryImageName = Results.QueryImageName;  
+		JointResults(imageIndex).EstimationError = Results.EstimationError;
+		JointResults(imageIndex).ByChanceDistanceError = estimatedDistanceForRandomSelection;
+		JointResults(imageIndex).ComputationTime = Results.ComputationTime;
+		JointResults(imageIndex).TimesBetterThanChance = Results.TimesBetterThanChance;
+		JointResults(imageIndex).Success = Results.Success;
+	end
 	
-    Settings.ResultPath = [Settings.InitialResultPath baseFolder '/']; % Reset path      	
+	Settings.ResultPath = [Settings.InitialResultPath baseFolder '/']; % Reset path      	
 	save([Settings.ResultPath 'JointResults.mat'], 'JointResults');
 	struct2csv(JointResults, [Settings.ResultPath 'joint-recall-results-' Settings.ExperimentName '.csv']); % Save as csv file	
 	averageEstimationError = mean([JointResults.EstimationError]);   
-    disp('Geolocalization task completed successfuly!');
+	disp('Geolocalization task completed successfuly!');
 end

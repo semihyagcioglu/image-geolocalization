@@ -6,6 +6,6 @@ function [settings] = LoadSettings(fileName)
 	% Output : settings - a struct containing key value pairs
 
 	addpath('lib/ini2struct');    
-    settings = ini2struct(fileName);
+	settings = ini2struct(fileName);
 end
 

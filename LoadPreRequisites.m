@@ -6,10 +6,10 @@ function AllItems = LoadPreRequisites(parameters)
 	%
 	% Outputs:	AllItems - Entire database items
 	
-	% Default varibles
-    Settings.AllItemsPath = '/data_caverna/semih/sanfran/features-uncompressed/';
-    Settings.ReferenceDataPath = '/data_caverna/semih/sanfran/images/';
-	Settings.QueryDataPath = '/data_caverna/semih/sanfran/query/BuildingQueryImagesCartoIDCorrected-Upright/';
+	% Default variables
+	Settings.AllItemsPath = '/data/features/‘;
+	Settings.ReferenceDataPath = '/data/images/';
+	Settings.QueryDataPath = '/data/query/';
 	
 	if(exist('parameters','var')) % If provided override default variables
 		parameterFields = fieldnames(parameters); 
@@ -22,8 +22,8 @@ function AllItems = LoadPreRequisites(parameters)
 	
 	run('dsp/vlfeat-0.9.17/toolbox/vl_setup.m'); % Prerequisite run for vlfeat library.	
 	disp('Loading Features...');
-
-    fileDir = dir([Settings.AllItemsPath 'AllCandidates*.mat']);
+	
+	fileDir = dir([Settings.AllItemsPath 'AllCandidates*.mat']);
 	%tic;
 	for dinx = 1: length(fileDir)	
 		file = load([Settings.AllItemsPath fileDir(dinx).name]);
