@@ -7,7 +7,7 @@ function AllItems = LoadPreRequisites(parameters)
 	% Outputs:	AllItems - Entire database items
 	
 	% Default variables
-	Settings.AllItemsPath = '/data/features/‘;
+	Settings.AllItemsPath = '/data/features/';
 	Settings.ReferenceDataPath = '/data/images/';
 	Settings.QueryDataPath = '/data/query/';
 	
