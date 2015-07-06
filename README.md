@@ -2,7 +2,7 @@
 
 #### Introduction
 
-This repository contains codes for the algorithms described in the study City Scale Image Geolocalization via Dense Scene Alignment.
+This repository contains codes for the algorithms described in the study [City Scale Image Geolocalization via Dense Scene Alignment](http://www.semihyagcioglu.com/projects/image-geolocalization).
 
 Please refer to project page for more details, which is avaliable at http://www.semihyagcioglu.com/projects/image-geolocalization
 
@@ -18,8 +18,8 @@ Please refer to project page for more details, which is avaliable at http://www.
 
 #### Notes
 
-- lib 	: External libraries used in the project
-- data: Data files used in the project
+- lib folder holds external libraries used in the project
+- data folder holds data files used in the project
 - You may want change the default values in the LoadPreRequisities.m
 - You can change algorithm parameters via settings.ini
 - As a pre-processing step, you should extract image features via CreateAllImageFeaturesAtOnce.m
