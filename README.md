@@ -2,9 +2,9 @@
 
 #### Introduction
 
-This repository contains codes for the algorithms described in the study [City Scale Image Geolocalization via Dense Scene Alignment](http://www.semihyagcioglu.com/projects/image-geolocalization).
+This repository contains sample code for the algorithms described in the following study [City Scale Image Geolocalization via Dense Scene Alignment](http://semihyagcioglu.com/projects/image-geolocalization).
 
-Please refer to project page for more details, which is avaliable at http://www.semihyagcioglu.com/projects/image-geolocalization
+For more details, please visit the [project page](http://semihyagcioglu.com/projects/image-geolocalization)
 
 #### Requirements
 
